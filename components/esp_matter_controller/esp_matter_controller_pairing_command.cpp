@@ -14,8 +14,10 @@
 
 #include <esp_matter_commissioner.h>
 #include <esp_matter_controller_pairing_command.h>
+#include "is_commissioned.h"
 
 static const char *TAG = "pairing_command";
+int is_commissioned = 0;
 
 using namespace esp_matter::commissioner;
 using namespace chip;
@@ -77,6 +79,7 @@ void pairing_command::OnCommissioningComplete(NodeId nodeId, CHIP_ERROR err)
 void pairing_command::OnDeviceConnectedFn(void *context, ExchangeManager &exchangeMgr, SessionHandle &sessionHandle)
 {
     ESP_LOGI(TAG, "OnDeviceConnectedFn");
+    is_commissioned = 1;
     CommissionerDiscoveryController *cdc = esp_matter::commissioner::get_discovery_controller();
 
     if (cdc != nullptr) {
